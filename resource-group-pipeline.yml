@@ -10,7 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: InitiateTerraform
+  - stage: Init_Validate_Plan_Terraform
     jobs:
       - job:
         steps:
@@ -32,4 +32,11 @@ stages:
           inputs:
             command: 'validate'
             workingDirectory: '$(Build.ArtifactStagingDirectory)'
+            allowTelemetryCollection: false
+        
+        - task: TerraformCLI@0
+          inputs:
+            command: 'plan'
+            environmentServiceName: 'Azure-AKS-connection'
+            providerAzureRmSubscriptionId: '58f627af-5f2f-4f24-b8b3-67712c182a5c'
             allowTelemetryCollection: false
