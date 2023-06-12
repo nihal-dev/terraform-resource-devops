@@ -27,38 +27,6 @@ stages:
             backendAzureRmContainerName: 'terraformremotestate'
             backendAzureRmKey: 'resourcegroup/'
             allowTelemetryCollection: false
-
-  - stage: FormatTerraform
-    jobs:
-      - job:
-        steps:
-        - task: TerraformCLI@0
-          inputs:
-            command: 'fmt'
-            allowTelemetryCollection: false
-
-        - task: CopyFiles@2
-          inputs:
-            SourceFolder: '$(System.DefaultWorkingDirectory)'
-            Contents: '**'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)'
-            
-        - task: PublishBuildArtifacts@1
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'terraform-files'
-            publishLocation: 'Container'
-  
-  - stage: ValidateTerraform
-    jobs:
-      - job:
-        steps:
-        - task: DownloadBuildArtifacts@1
-          inputs:
-            buildType: 'current'
-            downloadType: 'single'
-            artifactName: 'terraform-files'
-            downloadPath: '$(Build.ArtifactStagingDirectory)'
           
         - task: TerraformCLI@0
           inputs:
