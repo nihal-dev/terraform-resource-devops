@@ -8,3 +8,7 @@ resource "azurerm_resource_group" "practiserg" {
     client = var.client    
   }
 }
+
+output "resource_group_id" {
+  value = azurerm_resource_group.practiserg.id
+}
