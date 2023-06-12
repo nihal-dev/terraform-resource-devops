@@ -21,7 +21,7 @@ stages:
             backendServiceArm: 'Azure-AKS-connection'
             backendAzureRmSubscriptionId: '58f627af-5f2f-4f24-b8b3-67712c182a5c'
             backendAzureRmResourceGroupName: 'Nihal-Training'
-            backendAzureRmStorageAccountName: 'nihalstorageaccount'
+            backendAzureRmStorageAccountName: 'nihalstorageaccounts'
             backendAzureRmContainerName: 'terraformremotestate'
             backendAzureRmKey: 'rg/terraform.tfstate'
             allowTelemetryCollection: false
