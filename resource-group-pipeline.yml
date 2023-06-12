@@ -38,5 +38,28 @@ stages:
           inputs:
             command: 'plan'
             environmentServiceName: 'Azure-AKS-connection'
-            providerAzureRmSubscriptionId: '58f627af-5f2f-4f24-b8b3-67712c182a5c'
+            allowTelemetryCollection: false
+
+  - stage: Init_Apply_Terraform
+    jobs:
+      - job:
+        steps:
+        - task: TerraformCLI@0
+          inputs:
+            command: 'init'
+            backendType: 'azurerm'
+            backendServiceArm: 'Azure-AKS-connection'
+            backendAzureRmSubscriptionId: '58f627af-5f2f-4f24-b8b3-67712c182a5c'
+            ensureBackend: false
+            backendAzureRmResourceGroupName: 'Nihal-Training'
+            backendAzureRmResourceGroupLocation: 'Australia East'
+            backendAzureRmStorageAccountName: 'nihalstorageaccount'
+            backendAzureRmContainerName: 'terraformremotestate'
+            backendAzureRmKey: 'resourcegroup/'
+            allowTelemetryCollection: false
+
+        - task: TerraformCLI@0
+          inputs:
+            command: 'apply'
+            environmentServiceName: 'Azure-AKS-connection'
             allowTelemetryCollection: false
