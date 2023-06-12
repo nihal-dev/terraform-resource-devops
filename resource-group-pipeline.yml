@@ -51,9 +51,9 @@ stages:
             ensureBackend: false
             backendAzureRmResourceGroupName: 'Nihal-Training'
             backendAzureRmResourceGroupLocation: 'Australia East'
-            backendAzureRmStorageAccountName: 'nihalstorageaccount'
+            backendAzureRmStorageAccountName: 'nihalstorageaccounts'
             backendAzureRmContainerName: 'terraformremotestate'
-            backendAzureRmKey: 'resourcegroup/'
+            backendAzureRmKey: 'rg/terraform.tfstate'
             allowTelemetryCollection: false
 
         - task: TerraformCLI@0
