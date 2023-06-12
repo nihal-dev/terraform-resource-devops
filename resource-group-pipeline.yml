@@ -9,11 +9,59 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+  - stage: InitiateTerraform
+    jobs:
+      - job:
+        steps:
+        - task: TerraformCLI@0
+          inputs:
+            command: 'init'
+            backendType: 'azurerm'
+            backendServiceArm: 'Azure-AKS-connection'
+            backendAzureRmSubscriptionId: '58f627af-5f2f-4f24-b8b3-67712c182a5c'
+            ensureBackend: true
+            backendAzureRmResourceGroupName: 'Nihal-Training'
+            backendAzureRmResourceGroupLocation: 'Australia East'
+            backendAzureRmStorageAccountName: 'nihalstorageaccount'
+            backendAzureRmContainerName: 'terraformremotestate'
+            backendAzureRmKey: 'resourcegroup/'
+            allowTelemetryCollection: false
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - stage: FormatTerraform
+    jobs:
+      - job:
+        steps:
+        - task: TerraformCLI@0
+          inputs:
+            command: 'fmt'
+            allowTelemetryCollection: false
+
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: '$(System.DefaultWorkingDirectory)'
+            Contents: '**'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
+            
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'terraform-files'
+            publishLocation: 'Container'
+  
+  - stage: ValidateTerraform
+    jobs:
+      - job:
+        steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'current'
+            downloadType: 'single'
+            artifactName: 'terraform-files'
+            downloadPath: '$(Build.ArtifactStagingDirectory)'
+          
+        - task: TerraformCLI@0
+          inputs:
+            command: 'validate'
+            workingDirectory: '$(Build.ArtifactStagingDirectory)'
+            allowTelemetryCollection: false
