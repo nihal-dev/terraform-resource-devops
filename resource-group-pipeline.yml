@@ -25,7 +25,6 @@ stages:
             backendAzureRmResourceGroupLocation: 'Australia East'
             backendAzureRmStorageAccountName: 'nihalstorageaccount'
             backendAzureRmContainerName: 'terraformremotestate'
-            backendAzureRmKey: 'resourcegroup/'
             allowTelemetryCollection: false
           
         - task: TerraformCLI@0
